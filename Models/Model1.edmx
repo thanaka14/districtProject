@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="testModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="District">
+          <Key>
+            <PropertyRef Name="district_id" />
+          </Key>
+          <Property Name="district_id" Type="int" Nullable="false" />
+          <Property Name="district_name_thai" Type="varchar" MaxLength="100" />
+          <Property Name="district_name_eng" Type="varchar" MaxLength="100" />
+          <Property Name="multiple_district_id" Type="int" />
+        </EntityType>
+        <EntityType Name="MultipleDistrict">
+          <Key>
+            <PropertyRef Name="multiple_district_id" />
+          </Key>
+          <Property Name="multiple_district_id" Type="int" Nullable="false" />
+          <Property Name="multiple_district_name_thai" Type="varchar" MaxLength="100" />
+          <Property Name="multiple_district_name_eng" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <Association Name="R_16">
+          <End Role="MultipleDistrict" Type="Self.MultipleDistrict" Multiplicity="0..1" />
+          <End Role="District" Type="Self.District" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MultipleDistrict">
+              <PropertyRef Name="multiple_district_id" />
+            </Principal>
+            <Dependent Role="District">
+              <PropertyRef Name="multiple_district_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="testModelStoreContainer">
+          <EntitySet Name="District" EntityType="Self.District" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MultipleDistrict" EntityType="Self.MultipleDistrict" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="R_16" Association="Self.R_16">
+            <End Role="MultipleDistrict" EntitySet="MultipleDistrict" />
+            <End Role="District" EntitySet="District" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="testModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="District">
+          <Key>
+            <PropertyRef Name="district_id" />
+          </Key>
+          <Property Name="district_id" Type="Int32" Nullable="false" />
+          <Property Name="district_name_thai" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="district_name_eng" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="multiple_district_id" Type="Int32" />
+          <NavigationProperty Name="MultipleDistrict" Relationship="Self.R_16" FromRole="District" ToRole="MultipleDistrict" />
+        </EntityType>
+        <EntityType Name="MultipleDistrict">
+          <Key>
+            <PropertyRef Name="multiple_district_id" />
+          </Key>
+          <Property Name="multiple_district_id" Type="Int32" Nullable="false" />
+          <Property Name="multiple_district_name_thai" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="multiple_district_name_eng" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Districts" Relationship="Self.R_16" FromRole="MultipleDistrict" ToRole="District" />
+        </EntityType>
+        <Association Name="R_16">
+          <End Role="MultipleDistrict" Type="Self.MultipleDistrict" Multiplicity="0..1" />
+          <End Role="District" Type="Self.District" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MultipleDistrict">
+              <PropertyRef Name="multiple_district_id" />
+            </Principal>
+            <Dependent Role="District">
+              <PropertyRef Name="multiple_district_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="testEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Districts" EntityType="Self.District" />
+          <EntitySet Name="MultipleDistricts" EntityType="Self.MultipleDistrict" />
+          <AssociationSet Name="R_16" Association="Self.R_16">
+            <End Role="MultipleDistrict" EntitySet="MultipleDistricts" />
+            <End Role="District" EntitySet="Districts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="testModelStoreContainer" CdmEntityContainer="testEntities">
+          <EntitySetMapping Name="Districts">
+            <EntityTypeMapping TypeName="testModel.District">
+              <MappingFragment StoreEntitySet="District">
+                <ScalarProperty Name="district_id" ColumnName="district_id" />
+                <ScalarProperty Name="district_name_thai" ColumnName="district_name_thai" />
+                <ScalarProperty Name="district_name_eng" ColumnName="district_name_eng" />
+                <ScalarProperty Name="multiple_district_id" ColumnName="multiple_district_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MultipleDistricts">
+            <EntityTypeMapping TypeName="testModel.MultipleDistrict">
+              <MappingFragment StoreEntitySet="MultipleDistrict">
+                <ScalarProperty Name="multiple_district_id" ColumnName="multiple_district_id" />
+                <ScalarProperty Name="multiple_district_name_thai" ColumnName="multiple_district_name_thai" />
+                <ScalarProperty Name="multiple_district_name_eng" ColumnName="multiple_district_name_eng" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
